@@ -128,6 +128,63 @@
   --container-xl: 1280px;
 }
 
+/* --- DARK THEME --- */
+[data-theme="dark"] {
+  /* Dark Theme Color Palette */
+  --color-dk-gray-brown: #c9c7b9; /* Inverted for text */
+  --color-light-blue: #6ac6f9; /* Stays the same, good accent */
+  --color-yellow: #fbed63; /* Stays the same */
+  --color-orange: #ffb748; /* Stays the same */
+  --color-red: #f0341f; /* Stays the same */
+
+  /* Primitive Color Tokens */
+  --color-white: rgba(16, 24, 40, 1); /* Dark background */
+  --color-cream-50: rgba(16, 24, 40, 1); /* Dark background */
+  --color-cream-100: rgba(30, 41, 59, 1); /* Card background */
+
+  /* RGB versions for opacity control */
+  --color-primary-rgb: 106, 198, 249; /* light blue */
+  --color-text-rgb: 226, 232, 240; /* light gray for text */
+  --color-error-rgb: 240, 52, 31; /* red */
+  --color-warning-rgb: 255, 183, 72; /* orange */
+  --color-info-rgb: 251, 237, 99; /* yellow */
+
+  /* Background color tokens */
+  --color-bg-1: rgba(var(--color-primary-rgb), 0.1);
+  --color-bg-2: rgba(var(--color-warning-rgb), 0.12);
+  --color-bg-3: rgba(var(--color-info-rgb), 0.15);
+  --color-bg-4: rgba(var(--color-error-rgb), 0.1);
+  --color-bg-5: rgba(147, 51, 234, 0.1);
+  --color-bg-6: rgba(249, 115, 22, 0.1);
+  --color-bg-7: rgba(var(--color-info-rgb), 0.15);
+  --color-bg-8: rgba(6, 182, 212, 0.1);
+
+  /* Semantic Color Tokens */
+  --color-background: #0f172a; /* slate-900 */
+  --color-surface: #1e293b; /* slate-800 */
+  --color-text: #e2e8f0; /* slate-200 */
+  --color-text-secondary: #94a3b8; /* slate-400 */
+  --color-primary: var(--color-light-blue);
+  --color-primary-hover: #5ab5f8;
+  --color-primary-active: #4aaef7;
+  --color-secondary: rgba(var(--color-text-rgb), 0.1);
+  --color-secondary-hover: rgba(var(--color-text-rgb), 0.15);
+  --color-secondary-active: rgba(var(--color-text-rgb), 0.2);
+  --color-border: #334155; /* slate-700 */
+  --color-btn-primary-text: #0f172a; /* Dark text on light blue button */
+  --color-card-border: #334155; /* slate-700 */
+  --color-card-border-inner: #334155; /* slate-700 */
+  --color-error: var(--color-red);
+  --color-success: var(--color-light-blue);
+  --color-warning: var(--color-orange);
+  --color-info: var(--color-yellow);
+  --color-focus-ring: rgba(var(--color-primary-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-text-rgb), 0.8);
+
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+
 /* Base styles */
 html {
   font-size: var(--font-size-base);
@@ -142,6 +199,7 @@ html {
 body {
   margin: 0;
   padding: 0;
+  transition: background-color var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard);
 }
 
 *,
@@ -226,6 +284,7 @@ pre code {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-8);
   padding: var(--space-8) var(--space-16);
   border-radius: var(--radius-base);
   font-size: var(--font-size-base);
@@ -355,7 +414,7 @@ select.form-control {
   border: 1px solid var(--color-card-border);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: box-shadow var(--duration-normal) var(--ease-standard);
+  transition: box-shadow var(--duration-normal) var(--ease-standard), background-color var(--duration-normal) var(--ease-standard);
 }
 
 .card:hover {
@@ -554,6 +613,7 @@ select.form-control {
     border-bottom: 1px solid var(--color-border);
     padding: var(--space-16) 0;
     margin-bottom: var(--space-24);
+    transition: background-color var(--duration-normal), border-color var(--duration-normal);
 }
 
 .header-content {
@@ -647,7 +707,7 @@ section h2 {
     border-radius: var(--radius-lg);
     padding: var(--space-16);
     box-shadow: var(--shadow-sm);
-    transition: box-shadow var(--duration-normal);
+    transition: box-shadow var(--duration-normal), background-color var(--duration-normal), border-color var(--duration-normal);
 }
 
 .metric-card:hover,
@@ -1102,4 +1162,36 @@ section h2 {
 @keyframes shimmer {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
+}
+
+/* --- Icon Styling & Alignment --- */
+.material-icons {
+  /* Prevents the icon from affecting the line height of its container */
+  line-height: 1;
+  /* Ensures the icon's height is contained for better alignment */
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* Make icons in headings slightly larger for better visual weight */
+h1 .material-icons,
+h2 .material-icons,
+h3 .material-icons {
+  font-size: 1.1em;
+}
+
+/* Make icons in buttons slightly larger as well */
+.btn .material-icons,
+.mode-btn .material-icons {
+  font-size: 1.25em;
+}
+
+/* Ensure the main panel icon is large */
+.panel-icon .material-icons {
+  font-size: 2.5rem;
+}
+
+/* Align icons in alert items to the top */
+.alert-item .material-icons {
+    align-self: flex-start;
 }

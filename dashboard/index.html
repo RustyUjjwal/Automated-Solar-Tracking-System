@@ -6,16 +6,20 @@
     <title>Automated Solar Tracking System Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <header class="dashboard-header">
         <div class="container">
             <div class="header-content">
-                <h1><i class="fas fa-solar-panel"></i> Automated Solar Tracking System Dashboard</h1>
+                <h1><i class="material-icons">solar_power</i> Automated Solar Tracking System Dashboard</h1>
                 <div class="header-controls" style="display: flex; gap: 10px; align-items: center;">
+                   <!-- Theme Toggle Button -->
+                   <button class="btn btn--secondary" id="themeToggleBtn" aria-label="Toggle dark mode">
+                       <i class="material-icons">brightness_4</i>
+                   </button>
                    <button class="btn btn--primary" id="connectBtn">
-                       <i class="fas fa-plug"></i> Connect to Device
+                       <i class="material-icons">power</i> Connect to Device
                    </button>
                    <div class="system-status" id="systemStatus">
                        <div class="status-indicator" id="statusIndicator"></div>
@@ -28,10 +32,10 @@
 
     <div class="container">
         <section class="metrics-section">
-            <h2><i class="fas fa-tachometer-alt"></i> Real-Time Metrics</h2>
+            <h2><i class="material-icons">speed</i> Real-Time Metrics</h2>
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <h3><i class="fas fa-eye"></i> LDR Sensors</h3>
+                    <h3><i class="material-icons">visibility</i> LDR Sensors</h3>
                     <div class="sensor-grid">
                         <div class="sensor-item">
                             <span class="sensor-label">Top-Left</span>
@@ -65,7 +69,7 @@
                 </div>
 
                 <div class="metric-card">
-                    <h3><i class="fas fa-compass"></i> Panel Position</h3>
+                    <h3><i class="material-icons">explore</i> Panel Position</h3>
                     <div class="position-display">
                         <div class="angle-item">
                             <span class="angle-label">Azimuth</span>
@@ -77,14 +81,14 @@
                         </div>
                         <div class="panel-visual" id="panelVisual">
                             <div class="panel-icon" style="transform: rotate(165deg)">
-                                <i class="fas fa-solar-panel"></i>
+                                <i class="material-icons">solar_power</i>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="metric-card">
-                    <h3><i class="fas fa-bolt"></i> Power Output</h3>
+                    <h3><i class="material-icons">bolt</i> Power Output</h3>
                     <div class="power-metrics">
                         <div class="power-item">
                             <span class="power-label">Voltage</span>
@@ -102,20 +106,20 @@
                 </div>
 
                 <div class="metric-card">
-                    <h3><i class="fas fa-thermometer-half"></i> Environment</h3>
+                    <h3><i class="material-icons">thermostat</i> Environment</h3>
                     <div class="env-metrics">
                         <div class="env-item">
-                            <i class="fas fa-temperature-high"></i>
+                            <i class="material-icons">thermostat</i>
                             <span class="env-label">Temperature</span>
                             <div class="env-value" id="temperatureValue">28.5°C</div>
                         </div>
                         <div class="env-item">
-                            <i class="fas fa-sun"></i>
+                            <i class="material-icons">wb_sunny</i>
                             <span class="env-label">Light Intensity</span>
                             <div class="env-value" id="lightIntensityValue">750 lux</div>
                         </div>
                         <div class="env-item">
-                            <i class="fas fa-percentage"></i>
+                            <i class="material-icons">percent</i>
                             <span class="env-label">Efficiency</span>
                             <div class="env-value efficiency" id="efficiencyValue">87%</div>
                         </div>
@@ -125,16 +129,16 @@
         </section>
 
         <section class="controls-section">
-            <h2><i class="fas fa-sliders-h"></i> System Controls</h2>
+            <h2><i class="material-icons">tune</i> System Controls</h2>
             <div class="controls-grid">
                 <div class="control-card">
                     <h3>Tracking Mode</h3>
                     <div class="mode-toggle">
                         <button class="mode-btn active" id="autoModeBtn">
-                            <i class="fas fa-robot"></i> Automatic
+                            <i class="material-icons">smart_toy</i> Automatic
                         </button>
                         <button class="mode-btn" id="manualModeBtn">
-                            <i class="fas fa-hand-paper"></i> Manual
+                            <i class="material-icons">pan_tool</i> Manual
                         </button>
                     </div>
                 </div>
@@ -157,13 +161,13 @@
                     <h3>System Actions</h3>
                     <div class="action-buttons">
                         <button class="btn btn--primary" id="powerToggle">
-                            <i class="fas fa-power-off"></i> System Power
+                            <i class="material-icons">power_settings_new</i> System Power
                         </button>
                         <button class="btn btn--secondary" id="calibrateBtn">
-                            <i class="fas fa-crosshairs"></i> Calibrate
+                            <i class="material-icons">my_location</i> Calibrate
                         </button>
                         <button class="btn emergency-btn" id="emergencyStop">
-                            <i class="fas fa-stop"></i> Emergency Stop
+                            <i class="material-icons">stop</i> Emergency Stop
                         </button>
                     </div>
                 </div>
@@ -171,7 +175,7 @@
         </section>
 
         <section class="charts-section">
-            <h2><i class="fas fa-chart-line"></i> Historical Data</h2>
+            <h2><i class="material-icons">timeline</i> Historical Data</h2>
             <div class="charts-grid">
                 <div class="chart-card">
                     <h3>Power Output (24h)</h3>
@@ -201,10 +205,10 @@
         </section>
 
         <section class="info-section">
-            <h2><i class="fas fa-info-circle"></i> System Information</h2>
+            <h2><i class="material-icons">info</i> System Information</h2>
             <div class="info-grid">
                 <div class="info-card">
-                    <h3><i class="fas fa-cloud-sun"></i> Weather Conditions</h3>
+                    <h3><i class="material-icons">wb_cloudy</i> Weather Conditions</h3>
                     <div class="weather-info">
                         <div class="weather-item">
                             <span class="weather-label">Condition</span>
@@ -222,7 +226,7 @@
                 </div>
 
                 <div class="info-card">
-                    <h3><i class="fas fa-sun"></i> Sun Position</h3>
+                    <h3><i class="material-icons">wb_sunny</i> Sun Position</h3>
                     <div class="sun-info">
                         <div class="sun-item">
                             <span class="sun-label">Azimuth</span>
@@ -236,7 +240,7 @@
                 </div>
 
                 <div class="info-card">
-                    <h3><i class="fas fa-clock"></i> System Status</h3>
+                    <h3><i class="material-icons">schedule</i> System Status</h3>
                     <div class="status-info">
                         <div class="status-item">
                             <span class="status-label">Uptime</span>
@@ -250,17 +254,17 @@
                 </div>
 
                 <div class="info-card">
-                    <h3><i class="fas fa-bell"></i> Recent Alerts</h3>
+                    <h3><i class="material-icons">notifications</i> Recent Alerts</h3>
                     <div class="alerts-container" id="alertsContainer">
                         <div class="alert-item info">
-                            <i class="fas fa-info-circle"></i>
+                            <i class="material-icons">info</i>
                             <div class="alert-content">
                                 <span class="alert-message">System performing optimally</span>
                                 <span class="alert-time">2025-08-18 19:45:00</span>
                             </div>
                         </div>
                         <div class="alert-item warning">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="material-icons">warning</i>
                             <div class="alert-content">
                                 <span class="alert-message">Light cloud cover detected</span>
                                 <span class="alert-time">2025-08-18 18:30:00</span>

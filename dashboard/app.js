@@ -8,7 +8,8 @@ class SerialManager {
 
     async connect() {
         if (!("serial" in navigator)) {
-            alert("Web Serial API not supported by your browser. Please use a modern browser like Chrome or Edge.");
+            // In a real app, use a custom modal instead of alert
+            console.error("Web Serial API not supported by your browser.");
             return false;
         }
 
@@ -70,6 +71,7 @@ class SolarTrackingDashboard {
     constructor() {
         this.serialManager = new SerialManager();
         this.charts = {};
+        this.currentTheme = 'light';
         
         this.currentData = {
             sensorData: { ldrTopLeft: 0, ldrTopRight: 0, ldrBottomLeft: 0, ldrBottomRight: 0, temperature: 0 },
@@ -89,6 +91,7 @@ class SolarTrackingDashboard {
     init() {
         this.setupEventListeners();
         this.initializeCharts();
+        this.setupTheme(); // Setup theme logic
         this.updateUI();
     }
 
@@ -98,7 +101,7 @@ class SolarTrackingDashboard {
             connectBtn.addEventListener('click', async () => {
                 const connected = await this.serialManager.connect();
                 if (connected) {
-                    connectBtn.innerHTML = '<i class="fas fa-check"></i> Connected';
+                    connectBtn.innerHTML = '<i class="material-icons">check</i> Connected';
                     connectBtn.disabled = true;
                     this.serialManager.onDataReceived = (jsonData) => this.processArduinoData(jsonData);
                 }
@@ -124,7 +127,77 @@ class SolarTrackingDashboard {
             this.serialManager.write('STOP');
             this.addAlert('error', 'Software stop command sent to device.');
         });
+        
+        // Add theme toggle listener
+        document.getElementById('themeToggleBtn').addEventListener('click', () => this.toggleTheme());
     }
+    
+    // --- Theme Management ---
+    setupTheme() {
+        // Get theme from localStorage or system preference
+        this.currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        this.applyTheme();
+    }
+
+    applyTheme() {
+        // Apply the theme to the document
+        document.documentElement.setAttribute('data-theme', this.currentTheme);
+        const themeIcon = document.getElementById('themeToggleBtn').querySelector('i');
+        // Update the icon
+        if (this.currentTheme === 'dark') {
+            themeIcon.textContent = 'light_mode';
+        } else {
+            themeIcon.textContent = 'brightness_4';
+        }
+        // Update chart colors to match the theme
+        this.updateChartThemes();
+    }
+
+    toggleTheme() {
+        // Switch between light and dark
+        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', this.currentTheme);
+        this.applyTheme();
+    }
+
+    updateChartThemes() {
+        // Check if charts are initialized
+        if (!Object.keys(this.charts).length) return;
+
+        const isDark = this.currentTheme === 'dark';
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+        const textColor = isDark ? '#e2e8f0' : '#636154';
+
+        // Iterate over all charts and update their options
+        for (const chartName in this.charts) {
+            const chart = this.charts[chartName];
+            
+            // Update legend colors
+            if (chart.options.plugins && chart.options.plugins.legend) {
+                chart.options.plugins.legend.labels.color = textColor;
+            }
+
+            // Update scale (axis) colors
+            if (chart.options.scales) {
+                for (const scaleName in chart.options.scales) {
+                    const scale = chart.options.scales[scaleName];
+                    if (scale.grid) {
+                        scale.grid.color = gridColor;
+                    }
+                    if (scale.ticks) {
+                        scale.ticks.color = textColor;
+                    }
+                    if (scale.title) {
+                        scale.title.color = textColor;
+                    }
+                }
+            }
+            
+            chart.update(); // Redraw the chart with new colors
+        }
+    }
+    // --- End Theme Management ---
+
 
     processArduinoData(jsonData) {
         try {
@@ -252,11 +325,11 @@ class SolarTrackingDashboard {
         const alertElement = document.createElement('div');
         alertElement.className = `alert-item ${type}`;
         
-        let icon = 'fa-info-circle';
-        if (type === 'warning') icon = 'fa-exclamation-triangle';
-        else if (type === 'error') icon = 'fa-exclamation-circle';
+        let iconName = 'info';
+        if (type === 'warning') iconName = 'warning';
+        else if (type === 'error') iconName = 'error';
 
-        alertElement.innerHTML = `<i class="fas ${icon}"></i><div class="alert-content"><span class="alert-message">${message}</span><span class="alert-time">${timestamp}</span></div>`;
+        alertElement.innerHTML = `<i class="material-icons">${iconName}</i><div class="alert-content"><span class="alert-message">${message}</span><span class="alert-time">${timestamp}</span></div>`;
         
         container.prepend(alertElement);
         if (container.children.length > 5) {
