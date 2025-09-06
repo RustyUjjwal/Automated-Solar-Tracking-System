@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Solar Tracking System Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="material-icons">solar_power</i> Automated Solar Tracking System Dashboard</h1>
+                <div class="header-controls" style="display: flex; gap: 10px; align-items: center;">
+                   <!-- Theme Toggle Button -->
+                   <button class="btn btn--secondary" id="themeToggleBtn" aria-label="Toggle dark mode">
+                       <i class="material-icons">brightness_4</i>
+                   </button>
+                   <button class="btn btn--primary" id="connectBtn">
+                       <i class="material-icons">power</i> Connect to Device
+                   </button>
+                   <div class="system-status" id="systemStatus">
+                       <div class="status-indicator" id="statusIndicator"></div>
+                       <span id="statusText">System Offline</span>
+                   </div>
+               </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="metrics-section">
+            <h2><i class="material-icons">speed</i> Real-Time Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3><i class="material-icons">visibility</i> LDR Sensors</h3>
+                    <div class="sensor-grid">
+                        <div class="sensor-item">
+                            <span class="sensor-label">Top-Left</span>
+                            <div class="sensor-value" id="ldrTopLeft">850</div>
+                            <div class="sensor-bar">
+                                <div class="sensor-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Top-Right</span>
+                            <div class="sensor-value" id="ldrTopRight">720</div>
+                            <div class="sensor-bar">
+                                <div class="sensor-fill" style="width: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Bottom-Left</span>
+                            <div class="sensor-value" id="ldrBottomLeft">680</div>
+                            <div class="sensor-bar">
+                                <div class="sensor-fill" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        <div class="sensor-item">
+                            <span class="sensor-label">Bottom-Right</span>
+                            <div class="sensor-value" id="ldrBottomRight">790</div>
+                            <div class="sensor-bar">
+                                <div class="sensor-fill" style="width: 79%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3><i class="material-icons">explore</i> Panel Position</h3>
+                    <div class="position-display">
+                        <div class="angle-item">
+                            <span class="angle-label">Azimuth</span>
+                            <div class="angle-value" id="azimuthValue">165°</div>
+                        </div>
+                        <div class="angle-item">
+                            <span class="angle-label">Elevation</span>
+                            <div class="angle-value" id="elevationValue">45°</div>
+                        </div>
+                        <div class="panel-visual" id="panelVisual">
+                            <div class="panel-icon" style="transform: rotate(165deg)">
+                                <i class="material-icons">solar_power</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3><i class="material-icons">bolt</i> Power Output</h3>
+                    <div class="power-metrics">
+                        <div class="power-item">
+                            <span class="power-label">Voltage</span>
+                            <div class="power-value" id="voltageValue">12.4V</div>
+                        </div>
+                        <div class="power-item">
+                            <span class="power-label">Current</span>
+                            <div class="power-value" id="currentValue">2.8A</div>
+                        </div>
+                        <div class="power-item">
+                            <span class="power-label">Power</span>
+                            <div class="power-value highlight" id="powerValue">34.7W</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h3><i class="material-icons">thermostat</i> Environment</h3>
+                    <div class="env-metrics">
+                        <div class="env-item">
+                            <i class="material-icons">thermostat</i>
+                            <span class="env-label">Temperature</span>
+                            <div class="env-value" id="temperatureValue">28.5°C</div>
+                        </div>
+                        <div class="env-item">
+                            <i class="material-icons">wb_sunny</i>
+                            <span class="env-label">Light Intensity</span>
+                            <div class="env-value" id="lightIntensityValue">750 lux</div>
+                        </div>
+                        <div class="env-item">
+                            <i class="material-icons">percent</i>
+                            <span class="env-label">Efficiency</span>
+                            <div class="env-value efficiency" id="efficiencyValue">87%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="controls-section">
+            <h2><i class="material-icons">tune</i> System Controls</h2>
+            <div class="controls-grid">
+                <div class="control-card">
+                    <h3>Tracking Mode</h3>
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" id="autoModeBtn">
+                            <i class="material-icons">smart_toy</i> Automatic
+                        </button>
+                        <button class="mode-btn" id="manualModeBtn">
+                            <i class="material-icons">pan_tool</i> Manual
+                        </button>
+                    </div>
+                </div>
+
+                <div class="control-card" id="manualControls">
+                    <h3>Manual Control</h3>
+                    <div class="slider-controls">
+                        <div class="slider-item">
+                            <label>Azimuth: <span id="azimuthSliderValue">165°</span></label>
+                            <input type="range" id="azimuthSlider" min="0" max="180" value="165" class="slider">
+                        </div>
+                        <div class="slider-item">
+                            <label>Elevation: <span id="elevationSliderValue">45°</span></label>
+                            <input type="range" id="elevationSlider" min="0" max="90" value="45" class="slider">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <h3>System Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn--primary" id="powerToggle">
+                            <i class="material-icons">power_settings_new</i> System Power
+                        </button>
+                        <button class="btn btn--secondary" id="calibrateBtn">
+                            <i class="material-icons">my_location</i> Calibrate
+                        </button>
+                        <button class="btn emergency-btn" id="emergencyStop">
+                            <i class="material-icons">stop</i> Emergency Stop
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="charts-section">
+            <h2><i class="material-icons">timeline</i> Historical Data</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Power Output (24h)</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="powerChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Panel Tracking Angles</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="anglesChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>LDR Sensors Comparison</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="ldrChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Efficiency Tracking</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="efficiencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <h2><i class="material-icons">info</i> System Information</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3><i class="material-icons">wb_cloudy</i> Weather Conditions</h3>
+                    <div class="weather-info">
+                        <div class="weather-item">
+                            <span class="weather-label">Condition</span>
+                            <span class="weather-value" id="weatherCondition">Sunny</span>
+                        </div>
+                        <div class="weather-item">
+                            <span class="weather-label">Cloud Cover</span>
+                            <span class="weather-value" id="cloudCover">15%</span>
+                        </div>
+                        <div class="weather-item">
+                            <span class="weather-label">UV Index</span>
+                            <span class="weather-value" id="uvIndex">8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class="material-icons">wb_sunny</i> Sun Position</h3>
+                    <div class="sun-info">
+                        <div class="sun-item">
+                            <span class="sun-label">Azimuth</span>
+                            <span class="sun-value" id="sunAzimuth">195°</span>
+                        </div>
+                        <div class="sun-item">
+                            <span class="sun-label">Elevation</span>
+                            <span class="sun-value" id="sunElevation">52°</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class="material-icons">schedule</i> System Status</h3>
+                    <div class="status-info">
+                        <div class="status-item">
+                            <span class="status-label">Uptime</span>
+                            <span class="status-value" id="systemUptime">2d 14h 23m</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Energy Today</span>
+                            <span class="status-value" id="energyToday">4.2 kWh</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class="material-icons">notifications</i> Recent Alerts</h3>
+                    <div class="alerts-container" id="alertsContainer">
+                        <div class="alert-item info">
+                            <i class="material-icons">info</i>
+                            <div class="alert-content">
+                                <span class="alert-message">System performing optimally</span>
+                                <span class="alert-time">2025-08-18 19:45:00</span>
+                            </div>
+                        </div>
+                        <div class="alert-item warning">
+                            <i class="material-icons">warning</i>
+                            <div class="alert-content">
+                                <span class="alert-message">Light cloud cover detected</span>
+                                <span class="alert-time">2025-08-18 18:30:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
